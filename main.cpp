@@ -4,23 +4,26 @@
 #include <GL/glut.h>
 #endif
 #include <stdlib.h>
-#include "funs.h"
 #include <string>
 #include <iostream>
 #define COLUMNS 50
 #define FPS 60
 using namespace std;
 
-int rposx=15;
-int score=0;
-int lives=9;
-bool over=false;
-int enemypos=rand()%(COLUMNS-30)+3;
-int missileposx=rposx;
-int missileposx1;
+
+//important initialisations
+int rposx=15;	//position of rocket
+int score=0;	//initial score
+int lives=9;	//lives multiplied by 3
+bool over=false;	//is game over
+int enemypos=rand()%(COLUMNS-30)+3; //position of enemy rockets
+int missileposx=rposx;	//position where the missile has to be rendered
+int missileposx1;	
 int index1=50;
 int index=4;
 
+
+//function Declarations
 void display();
 void timer(int);
 void reshape(int,int);
@@ -41,6 +44,8 @@ void type(int);
 void print(int,int,int);
 
 
+
+
 int main(int argc,char** argv)
 {
     glutInit(&argc,argv);
@@ -56,15 +61,18 @@ int main(int argc,char** argv)
 
 }
 
+
+
 void display()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
-    //drawgrid();
-    drawrocket(rposx,1);
+    glClear(GL_COLOR_BUFFER_BIT);	//clear screen
+    //drawgrid();	//for debugging
+    drawrocket(rposx,1);	//draw rocket
     drawscore();
     drawborder();
     drawmissiles(missileposx);
     generateenemy(enemypos);
+    //code to check if missile hit the enemy
     if((index1==index || index1+1==index || index1-1==index) && (missileposx==enemypos || missileposx==enemypos+1 || missileposx== enemypos-1))
     {
         index=0;
@@ -83,6 +91,8 @@ void display()
     glutSwapBuffers();
 }
 
+
+//define what to do with the window when it is resized
 void reshape(int x,int y)
 {
     glViewport(0,0,x,y);
@@ -91,6 +101,7 @@ void reshape(int x,int y)
     glOrtho(0,COLUMNS,0,COLUMNS,-1.0,1.0);
     glMatrixMode(GL_MODELVIEW);
 }
+
 
 void timer(int)
 {
@@ -101,6 +112,8 @@ void timer(int)
     glutTimerFunc((1000/FPS),timer,0);
 }
 
+
+//define keyboard functions to control rockert with keyboard
 void keyboard(int key,int x,int y)
 {
     switch(key)
@@ -122,6 +135,8 @@ void keyboard(int key,int x,int y)
     }
 }
 
+
+//drawing a grid to check the coordinated whle debugging
 void drawgrid()
 {
     for(int x=0;x<COLUMNS;x++)
@@ -133,6 +148,8 @@ void drawgrid()
     }
 }
 
+
+//used by drawdrid()
 void unit(int x,int y)
 {
     if(x==0 || y==0 || x==COLUMNS-1 || y==COLUMNS-1)
@@ -282,6 +299,7 @@ void drawborder()
     glEnd();
 }
 
+//used after lifes becomes zero
 void gameover()
 {
     glClear(GL_COLOR_BUFFER_BIT);
@@ -450,6 +468,10 @@ void print(int a,int x,int y)
 }
 
 
+// don't mess with it
+// i know i wrote ver bad code but i was new and did all this in just 1 day
+// what can u axpect? XD
+
 void printhearts(int l)
 {
     if(l>=1)
@@ -459,6 +481,7 @@ void printhearts(int l)
     if(l>=3)
         drawheart(30,39);
 }
+
 
 void drawheart(int x,int y)
 {
